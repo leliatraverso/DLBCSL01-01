@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
 
-def find_broken_attributes(element, broken_values):
+def find_all_broken_attributes(element, broken_values):
     """
-    Recursively scans an XML element and its elements for attributes that have a broken value.
+    Recursively scans an XML element and the elements for attributes that may have a broken value.
     A 'broken' attribute is defined as one that has either an empty string ("") or None as its value.
     
     Args:
@@ -10,15 +10,15 @@ def find_broken_attributes(element, broken_values):
         broken_values (list): A list to store the broken attribute values found.
     """
     
-    # Check attributes of the current element
+    # Loop to check attributes of the current element
     for attr, value in element.attrib.items():
         print(attr)
-        if value == "" or value is None:  # Condition to identify broken attributes
+        if value == "" or value is None:  # Condition to identify broken attributes we want to find
             broken_values.append((attr, value))
     
     # Recurse into child elements
     for child in element:
-        find_broken_attributes(child, broken_values)
+        find_all_broken_attributes(child, broken_values)
         print(child)
 
 
@@ -38,12 +38,12 @@ def main():
     # Parse the XML document
     root = ET.fromstring(xml_data)
 
-    # List to store broken attributes
+    # List to later store broken attributes
     broken_attributes = []
-    find_broken_attributes(root, broken_attributes)
+    find_all_broken_attributes(root, broken_attributes)
 
-    # Output results
-    print("Broken Attributes Found:")
+    # Shows obtained results
+    print("The following broken attributes were found in the XML document:")
     for attr, value in broken_attributes:
         print(f"Attribute: {attr}, Value: '{value}'")
 
